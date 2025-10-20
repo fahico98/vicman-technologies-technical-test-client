@@ -2,6 +2,7 @@ import { ModalToCreateOrEditBook } from "@/components/books/ModalToCreateOrEditB
 import { ModalToDeleteBook } from "@/components/books/ModalToDeleteBook.jsx"
 import { handleFetchingInScroll } from "@/utils/globalFunctions.js"
 import bookDefaultCover from "@/assets/book_default_cover.png"
+import { LoanModal } from "@/components/books/LoanModal.jsx"
 import { Card, Spinner, Button } from "flowbite-react"
 import { useEffect, useState } from "react"
 import axios from "@/lib/axios.js"
@@ -11,10 +12,14 @@ export function Books() {
   const [nextPageUrl, setNextPageUrl] = useState(null)
   const [loading, setLoading] = useState(false)
   const [noMoreBooks, setNoMoreBooks] = useState(false)
+  
   const [selectedBookToEdit, setSelectedBookToEdit] = useState(null)
+  const [selectedBookToLoan, setSelectedBookToLoan] = useState(null)
   const [selectedBookToDelete, setSelectedBookToDelete] = useState(null)
-  const [openModalToDeleteBook, setOpenModalToDeleteBook] = useState(false)
+  
   const [openModalToCreateOrEditBook, setOpenModalToCreateOrEditBook] = useState(false)
+  const [openModalToLoan, setOpenModalToLoan] = useState(false)
+  const [openModalToDeleteBook, setOpenModalToDeleteBook] = useState(false)
 
   const FETCHING_OFFSET_IN_PX = 100
 
@@ -91,6 +96,13 @@ export function Books() {
     await fetchBooks()
   }
   
+  async function onLoanCreated() {
+    setSelectedBookToLoan(null)
+    setBooks([])
+    setNextPageUrl(null)
+    await fetchBooks()
+  }
+  
   function selectBookToEdit(index) {
     setSelectedBookToEdit(books[index])
     setOpenModalToCreateOrEditBook(true)
@@ -104,6 +116,11 @@ export function Books() {
   function selectBookToDelete(index) {
     setSelectedBookToDelete(books[index])
     setOpenModalToDeleteBook(true)
+  }
+  
+  function selectBookToLoan(index) {
+    setSelectedBookToLoan(books[index])
+    setOpenModalToLoan(true)
   }
   
   return (
@@ -120,6 +137,13 @@ export function Books() {
         onClose={() => setOpenModalToDeleteBook(false)}
         onBookDeleted={() => onBookDeleted()}
         book={selectedBookToDelete}
+      />
+      
+      <LoanModal
+        isOpen={openModalToLoan}
+        onClose={() => setOpenModalToLoan(false)}
+        book={selectedBookToLoan}
+        onLoanCreated={() => onLoanCreated()}
       />
       
       <div className="w-full flex justify-between items-center py-10">
@@ -161,8 +185,9 @@ export function Books() {
                   </div>
                 </div>
                 <div className="w-full flex justify-end gap-x-2">
-                  <Button className="btn-default" size="sm" onClick={() => selectBookToEdit(index)}><i className="bi bi-pencil-square"></i></Button>
-                  <Button className="btn-error" size="sm" onClick={() => selectBookToDelete(index)}><i className="bi bi-trash3"></i></Button>
+                  <Button title="Registrar prestamo" className="btn-default" size="sm" onClick={() => selectBookToLoan(index)}><i className="bi bi-book"></i></Button>
+                  <Button title="Editar" className="btn-default" size="sm" onClick={() => selectBookToEdit(index)}><i className="bi bi-pencil-square"></i></Button>
+                  <Button title="Eliminar" className="btn-error" size="sm" onClick={() => selectBookToDelete(index)}><i className="bi bi-trash3"></i></Button>
                 </div>
               </div>
             </Card>

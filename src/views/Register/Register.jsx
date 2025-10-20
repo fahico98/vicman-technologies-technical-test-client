@@ -1,11 +1,17 @@
 import { Button, Label, TextInput, HelperText, Spinner } from "flowbite-react"
 import { useForm, client } from "laravel-precognition-react"
+import { setGlobalState } from "@/state/globalState.js"
+import {useNavigate} from "react-router-dom"
 import axios from "@/lib/axios.js"
+import { useState } from "react"
 
 export function Register() {
+  const navigate = useNavigate()
+  const [loadingCsrfCookieRequest, setLoadingCsrfCookieRequest] = useState(false)
+
   client.use(axios)
 
-  const form = useForm("post", "/register", {
+  const form = useForm("POST", "/register", {
     name: "",
     email: "",
     password: "",
@@ -19,9 +25,23 @@ export function Register() {
     form.validate(event.target.id)
   }
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault()
-    form.submit()
+
+    setLoadingCsrfCookieRequest(true)
+
+    await axios.get(import.meta.env.VITE_API_CSRF_TOKEN_URL).then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        form.submit().then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            setGlobalState("user", response.data.user)
+            navigate("/libros")
+          }
+        })
+      }
+    })
+
+    setLoadingCsrfCookieRequest(false)
   }
 
   return (
@@ -72,7 +92,7 @@ export function Register() {
           </div>
           <div className="flex justify-start">
             <Button type="submit" size="sm" className="btn-default">
-              {form.processing ? <span><Spinner size="sm" aria-label="Info spinner example" className="me-2" light/>Enviando</span> : <span>Enviar</span>}
+              {form.processing || loadingCsrfCookieRequest ? <span><Spinner size="sm" aria-label="Info spinner example" className="me-2" light/>Enviando</span> : <span>Enviar</span>}
             </Button>
           </div>
         </form>
