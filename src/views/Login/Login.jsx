@@ -1,11 +1,14 @@
 import { Button, Label, TextInput, HelperText, Spinner } from "flowbite-react"
 import { useForm, client } from "laravel-precognition-react"
 import { setGlobalState } from "@/state/globalState.js"
+import {useNavigate} from "react-router-dom"
 import axios from "@/lib/axios.js"
+import { useState } from "react"
 
 export function Login() {
-  let loadingCsrfCookieRequest = false
-  
+  const navigate = useNavigate()
+  const [loadingCsrfCookieRequest, setLoadingCsrfCookieRequest] = useState(false)
+
   client.use(axios)
   
   const form = useForm("POST", "/login", {
@@ -22,18 +25,21 @@ export function Login() {
   
   async function handleSubmit(event) {
     event.preventDefault()
-    
-    loadingCsrfCookieRequest = true
-    
+
+    setLoadingCsrfCookieRequest(true)
+
     await axios.get(import.meta.env.VITE_API_CSRF_TOKEN_URL).then(response => {
       if (response.status >= 200 && response.status < 300) {
         form.submit().then(response => {
-          if (response.status >= 200 && response.status < 300) setGlobalState("user", response.data.user)
+          if (response.status >= 200 && response.status < 300) {
+            setGlobalState("user", response.data.user)
+            navigate("/libros")
+          }
         })
       }
     })
-    
-    loadingCsrfCookieRequest = false
+
+    setLoadingCsrfCookieRequest(false)
   }
 
   return (

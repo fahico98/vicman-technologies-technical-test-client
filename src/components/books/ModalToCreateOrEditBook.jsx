@@ -28,8 +28,6 @@ export function ModalToCreateOrEditBook({ isOpen, onClose = null, onBookCreated 
     if (isOpen) {
       fetchAuthors()
       
-      console.log({isEditing})
-
       // Si es edición, llenar el formulario con los datos del libro
       if (isEditing && book) {
         form.setData({
@@ -111,34 +109,19 @@ export function ModalToCreateOrEditBook({ isOpen, onClose = null, onBookCreated 
 
           <div className="input-container">
             <Label htmlFor="title" className="input-label">Título del libro</Label>
-            <TextInput
-              id="title"
-              type="text"
-              value={form.data.title}
-              onChange={(event) => onInputChange(event)}
-            />
+            <TextInput id="title" type="text" value={form.data.title} onChange={(event) => onInputChange(event)}/>
             {form.invalid('title') && <HelperText className="input-error-text"><i className="bi bi-exclamation-circle"></i>&nbsp;{form.errors.title}</HelperText>}
           </div>
           
           <div className="input-container">
             <Label htmlFor="first_publish_year" className="input-label">Año de publicación</Label>
-            <TextInput
-              id="first_publish_year"
-              type="number"
-              value={form.data.first_publish_year}
-              onChange={(event) => onInputChange(event)}
-            />
+            <TextInput id="first_publish_year" type="number" value={form.data.first_publish_year} onChange={(event) => onInputChange(event)}/>
             {form.invalid('first_publish_year') && <HelperText className="input-error-text"><i className="bi bi-exclamation-circle"></i>&nbsp;{form.errors.first_publish_year}</HelperText>}
           </div>
 
           <div className="input-container">
             <Label htmlFor="units_available" className="input-label">Ejemplares disponibles</Label>
-            <TextInput
-              id="units_available"
-              type="number"
-              value={form.data.units_available}
-              onChange={(event) => onInputChange(event)}
-            />
+            <TextInput id="units_available" type="number" value={form.data.units_available} onChange={(event) => onInputChange(event)}/>
             {form.invalid('units_available') && <HelperText className="input-error-text"><i className="bi bi-exclamation-circle"></i>&nbsp;{form.errors.units_available}</HelperText>}
           </div>
 
