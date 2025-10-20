@@ -1,36 +1,41 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Este archivo proporciona orientación a Claude Code (claude.ai/code) al trabajar con código en este repositorio.
 
-## Project Overview
+## Descripción del Proyecto
 
-This is a React 19 + Vite frontend application for Vicman Technologies technical test. The project uses modern React with JSX (not TypeScript) and is configured with ESLint for code quality.
+Esta es una aplicación frontend de React 19 + Vite para la prueba técnica de Vicman Technologies. El proyecto utiliza React moderno con JSX (no TypeScript) y está configurado con ESLint para la calidad del código.
 
-## Development Commands
+## Comandos de Desarrollo
 
-- `npm run dev` - Start development server with HMR (Hot Module Replacement)
-- `npm run build` - Build production bundle to `dist/` directory
-- `npm run preview` - Preview production build locally
-- `npm run lint` - Run ESLint on all files
+- `npm run dev` - Iniciar servidor de desarrollo con HMR (Hot Module Replacement)
+- `npm run build` - Construir bundle de producción en el directorio `dist/`
+- `npm run preview` - Previsualizar build de producción localmente
+- `npm run lint` - Ejecutar ESLint en todos los archivos
 
-## Architecture
+## Arquitectura
 
-**Build Tool**: Vite 7 with the official React plugin using Babel for Fast Refresh
+**Herramienta de Build**: Vite 7 con el plugin oficial de React usando Babel para Fast Refresh
 
-**Entry Points**:
-- `index.html` - HTML entry point that loads `/src/main.jsx`
-- `src/main.jsx` - React application entry that renders `App` component into `#root` div with StrictMode enabled
-- `src/App.jsx` - Main application component
+**Puntos de Entrada**:
+- `index.html` - Punto de entrada HTML que carga `/src/main.jsx`
+- `src/main.jsx` - Entrada de la aplicación React.
+- `src/styles/index.css` - Entrada de estilos de la aplicación React.
 
-**Code Style**:
-- ESLint configuration extends recommended rules for React Hooks and React Refresh
-- Custom rule: `no-unused-vars` allows uppercase constants (pattern `^[A-Z_]`)
-- ECMAScript 2020 syntax with JSX support
-- Browser globals enabled
+**Estilo de Código**:
+- La configuración de ESLint extiende las reglas recomendadas para React Hooks y React Refresh
+- Regla personalizada: `no-unused-vars` permite constantes en mayúsculas (patrón `^[A-Z_]`)
+- Sintaxis ECMAScript 2020 con soporte JSX
+- Globales de navegador habilitados
 
-## Project Conventions
+## Convenciones del Proyecto
 
-- Use `.jsx` extension for React components
-- The project uses JavaScript (not TypeScript)
-- React 19 is installed with the latest features available
-- All React components should use function components with hooks
+- Usar extensión `.jsx` para componentes de React
+- El proyecto usa JavaScript (no TypeScript)
+- React 19 está instalado con las últimas características disponibles
+- Todos los componentes de React deben usar componentes de función con hooks
+- Cada componente debe estar dentro de un directorio con el mismo nombre del componente, por ejemplo, el componente `Chart.jsx` debe estar en la ruta 
+  `src/components/Chart/Chart.jsx`.
+- Los estilos que se apliquen exclusivamente a un componente en particular deben estar en un archivo `.css` dentro del mismo directorio del componente y el 
+  archivo debe tener el mismo nombre que el del archivo `.jsx` del componente.
+- El proyecto usa componentes preconstruidos de la librería [shadcn](https://ui.shadcn.com/).
